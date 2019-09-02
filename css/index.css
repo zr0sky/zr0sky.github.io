@@ -2520,6 +2520,21 @@ table td {
   color: #666;
   cursor: pointer;
 }
+.busuanzi .separator {
+  margin: 0 0.3rem;
+}
+.busuanzi-uv {
+  color: #f4f5f5;
+}
+.busuanzi-uv i {
+  margin: 0 0.3rem 0 0;
+}
+.busuanzi-pv {
+  color: #f4f5f5;
+}
+.busuanzi-pv i {
+  margin: 0 0.3rem 0 0;
+}
 .search-mask {
   display: none;
   position: fixed;
