@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="keywords" content="zr0sky, zr0sky's Blog"><meta name="author" content="zr0sky"><meta name="description" content="BurpSuite 插件编写 - Hello World"><meta name="copyright" content="zr0sky"><title>BurpSuite 插件编写 - Hello World | zr0sky's Blog</title><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon.ico?v=1.3.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon.ico?v=1.3.1" type="image/png" sizes="32x32"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=1.3.1"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  sidebar: {"offsetTop":"20px","renderTocDepth":4},
+  back2top: {"enable":true},
+  reward: true,
+  fancybox: false,
+  zoom_image: {"enable":true,"mask_color":"rgba(0,0,0,0.6)"},
+  gallery_waterfall: undefined,
+  lazyload: undefined,
+  external_link: {"icon":{"enable":true,"name":"external-link"}},
+  shortcuts: {"switch_post":false},
+  prompt: {"copy_success":"复制成功","copy_error":"复制失败","creative_commons":"知识共享","copy_button":"点击复制"}
+};
+
+window.CONFIG = CONFIG;</script></head><body><div id="container"><header id="header"><div class="loading-bar"><div class="progress"></div></div><nav class="header-nav"><div class="header-nav-inner"><div class="fa fa-bars header-nav-menu-icon"></div><div class="header-nav-search"><i class="fa fa-search"></i><span>搜索</span></div><div class="header-nav-menu"><div class="menu-item"><a class="menu-item-inner" href="/"><i class="fa fa-home"></i>首页</a></div><div class="menu-item"><a class="menu-item-inner" href="/archives/"><i class="fa fa-folder-open"></i>归档</a></div><div class="menu-item"><a class="menu-item-inner" href="/categories/"><i class="fa fa-th"></i>分类</a></div><div class="menu-item"><a class="menu-item-inner" href="/tags/"><i class="fa fa-tags"></i>标签</a></div><div class="menu-item"><a class="menu-item-inner" href="/about/"><i class="fa fa-user"></i>关于</a></div><div class="menu-item"><a class="menu-item-inner" href="/friends/"><i class="fa fa-address-book"></i>友链</a></div></div></div></nav><div class="header-info"><div class="header-info-inner"><div class="header-info-title">zr0sky's Blog</div><div class="header-info-subtitle">天下本无事，庸人自扰之</div></div></div></header><main id="main"><div class="main-inner"><aside id="sidebar"><div class="sidebar-inner"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-overview">站点概览</span></div><section class="sidebar-toc"><div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#前提准备"><span class="toc-number">1.1.</span> <span class="toc-text">前提准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Burp-Suite"><span class="toc-number">1.1.1.</span> <span class="toc-text">Burp Suite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jython"><span class="toc-number">1.1.2.</span> <span class="toc-text">Jython</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python2"><span class="toc-number">1.1.3.</span> <span class="toc-text">Python2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-插件编写"><span class="toc-number">2.</span> <span class="toc-text">0x01 插件编写</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常用的库"><span class="toc-number">2.1.</span> <span class="toc-text">常用的库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例程"><span class="toc-number">2.2.</span> <span class="toc-text">例程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码解析"><span class="toc-number">2.3.</span> <span class="toc-text">代码解析</span></a></li></ol></li></ol></div></section><section class="hide sidebar-overview"><div class="sidebar-author"><img class="sidebar-author-avatar" src="/images/avatar.png" alt="avatar"><p class="sidebar-author-motto">Less is more</p></div><div class="sidebar-social"><span class="sidebar-social-item"><a href="https://github.com/zr0sky" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><i class="fa fa-github"></i></a></span><span class="sidebar-social-item"><a href="//wpa.qq.com/msgrd?v=3&amp;uin=486233524&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><i class="fa fa-qq"></i></a></span><span class="sidebar-social-item"><a href="mailto:i@zr0sky.cn" target="_blank" rel="noopener" data-popover="Email" data-popover-pos="up"><i class="fa fa-envelope-open"></i></a></span></div><div class="sidebar-state"><span class="sidebar-state-item sidebar-state-posts"><a href="/archives/"><div class="sidebar-state-item-count">4</div><div class="sidebar-state-item-name">归档</div></a></span><span class="sidebar-state-item sidebar-state-categories"><a href="/categories/"><div class="sidebar-state-item-count">2</div><div class="sidebar-state-item-name">分类</div></a></span><span class="sidebar-state-item sidebar-state-tags"><a href="/tags/"><div class="sidebar-state-item-count">3</div><div class="sidebar-state-item-name">标签</div></a></span></div><div class="sidebar-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg" alt="知识共享"></a></div></section><div class="sidebar-progress"><div class="sidebar-progress-read"><span>你已阅读了</span><span class="sidebar-progress-number"></span></div><div class="sidebar-progress-line"></div></div></div></aside><div class="content headings code-highlight"><header class="post-header"><h1 class="post-title">BurpSuite 插件编写 - Hello World</h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-09-03</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-09-03</span></span><span class="post-reading-count"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>BurpSuite是渗透过程中的一大神器，几乎必不可少。而必要的插件可以使我们事半功倍。虽然Burp中已经有很多优秀的插件供我们使用，但有些情况下我们可以根据自己的需要定制自己的插件。</p>
+<h2 id="前提准备"><a href="#前提准备" class="headerlink" title="前提准备"></a>前提准备</h2><h3 id="Burp-Suite"><a href="#Burp-Suite" class="headerlink" title="Burp Suite"></a>Burp Suite</h3><p>这个就不说了</p>
+<h3 id="Jython"><a href="#Jython" class="headerlink" title="Jython"></a>Jython</h3><p>Jython 是Burp 支持Python 的必要插件。<span class="external-link"><a href="https://www.jython.org/" target="_blank" rel="noopener">下载官网</a><i class="fa fa-external-link"></i></span></p>
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/1567486883062.png" alt="1567486883062"></p>
+<p>设置Jython路径</p>
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/1567486935814.png" alt="1567486935814"></p>
+<h3 id="Python2"><a href="#Python2" class="headerlink" title="Python2"></a>Python2</h3><p>Jython 目前只支持Python2</p>
+<h1 id="0x01-插件编写"><a href="#0x01-插件编写" class="headerlink" title="0x01 插件编写"></a>0x01 插件编写</h1><p>插件API的文档地址：<span class="external-link"><a href="https://portswigger.net/burp/extender/api/index.html" target="_blank" rel="noopener">Generated Documentation</a><i class="fa fa-external-link"></i></span></p>
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/1567487134501.png" alt="1567487134501"></p>
+<p>里面有详细的介绍</p>
+<h2 id="常用的库"><a href="#常用的库" class="headerlink" title="常用的库"></a>常用的库</h2><figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> burp <span class="keyword">import</span> IBurpExtender</span><br><span class="line"><span class="comment"># 所有扩展都必须实现此接口。</span></span><br><span class="line"><span class="keyword">from</span> burp <span class="keyword">import</span> IHttpListener</span><br><span class="line"><span class="comment"># 会接收所有通过 BurpSuite 的 Request 和 Response </span></span><br><span class="line"><span class="keyword">from</span> burp <span class="keyword">import</span> IProxyListener</span><br><span class="line"><span class="comment"># 扩展可以实现这个接口，然后调用IBurpExtenderCallbacks.registerProxyListener()来注册一个代理监听器。监听器将收到代理工具正在处理的请求和响应的通知。通过注册代理侦听器，扩展可以执行自定义分析或修改这些消息，并控制消息拦截。</span></span><br><span class="line"><span class="keyword">from</span> burp <span class="keyword">import</span> IHttpRequestResponse</span><br><span class="line"><span class="comment">#此接口用于检索和更新有关http消息的详细信息</span></span><br></pre></td></tr></table></div></figure>
+
+<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><p>使用官方例程来了解插件的基础构成，地址：<span class="external-link"><a href="https://github.com/PortSwigger/example-hello-world/blob/master/python/HelloWorld.py" target="_blank" rel="noopener">Hello World</a><i class="fa fa-external-link"></i></span></p>
+<figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> burp <span class="keyword">import</span> IBurpExtender</span><br><span class="line"><span class="keyword">from</span> java.io <span class="keyword">import</span> PrintWriter</span><br><span class="line"><span class="keyword">from</span> java.lang <span class="keyword">import</span> RuntimeException</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BurpExtender</span><span class="params">(IBurpExtender)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># implement IBurpExtender</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">registerExtenderCallbacks</span><span class="params">(self, callbacks)</span>:</span></span><br><span class="line">        <span class="comment"># set our extension name</span></span><br><span class="line">        callbacks.setExtensionName(<span class="string">"Hello world extension"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># obtain our output and error streams</span></span><br><span class="line">        stdout = PrintWriter(callbacks.getStdout(), <span class="literal">True</span>)</span><br><span class="line">        stderr = PrintWriter(callbacks.getStderr(), <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># write a message to our output stream</span></span><br><span class="line">        stdout.println(<span class="string">"Hello output"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># write a message to our error stream</span></span><br><span class="line">        stderr.println(<span class="string">"Hello errors"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># write a message to the Burp alerts tab</span></span><br><span class="line">        callbacks.issueAlert(<span class="string">"Hello alerts"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># throw an exception that will appear in our error stream</span></span><br><span class="line">        <span class="keyword">raise</span> RuntimeException(<span class="string">"Hello exception"</span>)</span><br></pre></td></tr></table></div></figure>
+
+<h2 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h2><p>在代码开始需导入<code>IBurpExtender</code>，这是Burpsuite插件所必须的。之后需要一个类，继承从Burp导入的库</p>
+<p><code>class BurpExtender(IBurpExtender)</code>。其中必须要有一个<code>registerExtenderCallbacks</code>函数用以注册插件相关信息。其参数是一个<code>IBurpExtenderCallbacks</code>类型的对象，被burp用来传递一组回调方法给扩展，扩展可以使用这些方法在burp中执行各种操作。根据需要调用此接口的方法，以扩展Burp的功能。</p>
+<figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置插件名称</span></span><br><span class="line">callbacks.setExtensionName(<span class="string">"Hello world extension"</span>)</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/3b8f2823-3301-41b6-a5a3-beecab473142.png" alt="img"></p>
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/91b7cc46-378d-4a21-991a-2ce14c74c393.png" alt="img"></p>
+<figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取输出流(之后可以输出信息)</span></span><br><span class="line">stdout = PrintWriter(callbacks.getStdout(), <span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 获取错误流(之后可以输出错误信息)</span></span><br><span class="line">stderr = PrintWriter(callbacks.getStderr(), <span class="literal">True</span>)</span><br></pre></td></tr></table></div></figure>
+
+<p>获取输出/错误流</p>
+<figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出信息，可在插件选项卡下Output处查看</span></span><br><span class="line">stdout.println(<span class="string">"Hello output"</span>)</span><br><span class="line"><span class="comment"># 输出错误，可在插件选项卡下Error处查看</span></span><br><span class="line">stderr.println(<span class="string">"Hello errors"</span>)</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/485a95b8-f7ca-41cb-9f03-bbe255c5035b.png" alt="img"></p>
+<figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在Alert选项卡下输出一条信息</span></span><br><span class="line">callbacks.issueAlert(<span class="string">"Hello alerts"</span>)</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/b2a1010a-5b1d-43c7-b0ba-18e2158f531c.png" alt="img"></p>
+<figure class="highlight python"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 抛出错误,可在Error选项卡查看</span></span><br><span class="line"><span class="keyword">raise</span> RuntimeException(<span class="string">"Hello exception"</span>)</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/5fde7e60-c364-4157-b1aa-aa6c5cc6d309.png" alt="img"></p>
+</div><footer class="post-footer"><div class="post-footer-end"><span>------</span><span>本文结束，感谢您的阅读</span><span>------</span></div><div class="post-copyright"><div class="copyright-author"><span class="copyright-name">本文作者:</span><span class="copyright-value"><a href="http://yoursite.com">zr0sky</a></span></div><div class="copyright-link"><span class="copyright-name">本文链接:</span><span class="copyright-value"><a href="http://yoursite.com/2019/09/03/BurpSuite-插件编写-Hello-World/">http://yoursite.com/2019/09/03/BurpSuite-插件编写-Hello-World/</a></span></div><div class="copyright-notice"><span class="copyright-name">版权声明:</span><span class="copyright-value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-footer-tags"><i class="fa fa-tags icon"></i><span><a href="http://yoursite.com/tags/BurpSuite/" title="BurpSuite">BurpSuite</a></span><span><a href="http://yoursite.com/tags/Python/" title="Python">Python</a></span></div><div id="reward"><div class="reward-button">请我喝杯咖啡~</div><div class="reward-qr-wrapper"><div class="reward-qr"><span class="reward-qr-alipay"><img src="/images/reward/alipay.jpg"><div class="reward-qr-alipay-text">支付宝打赏</div></span><span class="reward-qr-wechat"><img src="/images/reward/wechat.png"><div class="reward-qr-wechat-text">微信打赏</div></span></div></div></div><nav id="paginator"><div class="post-paginator"><div class="article-next pull-right"><a href="/2019/08/31/Hexo-插入本地图片/"><span class="title">Hexo 插入本地图片</span><i class="fa fa-chevron-right"></i></a></div></div></nav></footer></div><div class="clearfix"></div></div></main><footer id="footer"><div class="footer-inner"><div><span>&copy; 2019</span><span class="fa fa-heart  footer-separator" style="color: #ff0000"></span><span>zr0sky All Rights Reserved</span></div><div class="busuanzi"><span class="busuanzi-uv"><i class="fa fa-user"></i><span>访问人数 </span><span id="busuanzi_value_site_uv"></span></span><span class="separator">|</span><span class="busuanzi-pv"><i class="fa fa-eye"></i><span>浏览总量 </span><span id="busuanzi_value_site_pv"></span></span><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async data-pjax></script></div></div></footer><div id="back-top"><div class="back-top-inner" data-popover="回到顶部" data-popover-pos="up"><i class="fa fa-rocket"></i></div></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script>window.addEventListener('load', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+    
+    initSearch();
+  });
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var isXML = true;
+  var search_path = 'search.json';
+  
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+  
+  var path = '/' + search_path;
+
+  function initSearch() {
+    $.ajax({
+      url: path,
+      dataType: isXML ? 'xml' : 'json',
+      async: true,
+      success: function (res) {
+        var datas = isXML ? $('entry', res).map(function () {
+          // 将 XML 转为 JSON
+          return {
+            title: $('title', this).text(),
+            content: $('content', this).text(),
+            url: $('url', this).text()
+          };
+        }).get() : res;
+
+        var $input = $('.search-input input');
+        var $result = $('.search-results');
+
+        // 搜索对象（标题、内容）的权重，影响显示顺序
+        var WEIGHT = { title: 100, content: 1 };
+
+        var searchPost = function () {
+          var searchText = $input.val().toLowerCase().trim();
+          // 根据空白字符分隔关键字
+          var keywords = searchText.split(/[\s]+/);
+          // 搜索结果
+          var matchPosts = [];
+
+          // 有多个关键字时，将原文字整个保存下来
+          if (keywords.length > 1) {
+            keywords.push(searchText);
+          }
+          
+          // 防止未输入字符时搜索
+          if (searchText.length > 0) {
+            datas.forEach(function (data) {
+              var isMatch  = false;
+              
+              // 没有标题的文章使用预设的 i18n 变量代替
+              var title = (data.title && data.title.trim()) || '( 文章无标题 )';
+              var titleLower = title && title.toLowerCase();
+              // 删除 HTML 标签 和 所有空白字符
+              var content = data.content && data.content.replace(/<[^>]+>|\s+/, '');
+              var contentLower = content && content.toLowerCase();
+              // 删除重复的 /
+              var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/, '/');
+              
+              // 标题中匹配到的关键词
+              var titleHitSlice = [];
+              // 内容中匹配到的关键词
+              var contentHitSlice = [];
+
+              keywords.forEach(function (keyword) {
+                /**
+                 * 获取匹配的关键词的索引
+                 * @param {String} keyword 要匹配的关键字
+                 * @param {String} text 原文字
+                 * @param {Boolean} caseSensitive 是否区分大小写
+                 * @param {Number} weight 匹配对象的权重。权重大的优先显示
+                 * @return {Array}
+                 */
+                function getIndexByword (word, text, caseSensitive, weight) {
+                  if (!word || !text) return [];
+                  
+                  var startIndex = 0; // 每次匹配的开始索引
+                  var index = -1;     // 匹配到的索引值
+                  var result = [];    // 匹配结果
+
+                  if (!caseSensitive) {
+                    word = word.toLowerCase();
+                    text = text.toLowerCase();
+                  }
+
+                  while((index = text.indexOf(word, startIndex)) !== -1) {
+                    var hasMatch = false;
+
+                    // 索引位置相同的关键词，保留长度较长的
+                    titleHitSlice.forEach(function (hit) {
+                      if (hit.index === index && hit.word.length < word.length) {
+                        hit.word = word;
+                        hasMatch = true;
+                      }
+                    });
+                    startIndex = index + word.length;
+                    !hasMatch && result.push({ index: index, word: word, weight: weight });
+                  }
+
+                  return result;
+                }
+                
+                titleHitSlice = titleHitSlice.concat(
+                  getIndexByword(keyword, titleLower, false, WEIGHT.title));
+                contentHitSlice = contentHitSlice.concat(
+                  getIndexByword(keyword, contentLower, false, WEIGHT.content));
+              });
+              
+              var hitTitle = titleHitSlice.length;
+              var hitContent = contentHitSlice.length;
+
+              if (hitTitle > 0 || hitContent > 0) {
+                isMatch = true;
+              }
+
+              if (isMatch) {
+                ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                  // 按照匹配文字的索引的递增顺序排序
+                  hit.sort(function (left, right) {
+                    return left.index - right.index;
+                  });
+                });
+                
+                /**
+                 * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+                 * @param {String} text 原文本
+                 * @param {Array} hitSlice 匹配项的索引信息
+                 * @param {Number} start 开始索引
+                 * @param {Number} end 结束索引
+                 * @return {String}
+                 */
+                function highlightKeyword (text, hitSlice, start, end) {
+                  if (!text || !hitSlice || !hitSlice.length) return;
+
+                  var result = '';
+                  var startIndex = start;
+                  var endIndex = end;
+
+                  hitSlice.forEach(function (hit) {
+                    if (hit.index < startIndex) return;
+
+                    var hitWordEnd = hit.index + hit.word.length;
+
+                    result += text.slice(startIndex, hit.index);
+                    result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                    startIndex = hitWordEnd;
+                  });
+                  result += text.slice(startIndex, endIndex);
+
+                  return result;
+                }
+
+                var postData = {};
+                // 文章总的搜索权重
+                var postWeight = titleHitSlice.length * 100 + contentHitSlice.length;
+                // 标记匹配关键词后的标题
+                var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+                // 标记匹配关键词后的内容
+                var postContent;
+                
+                // 截取匹配的第一个字符，前后共 200 个字符来显示
+                if (contentHitSlice.length > 0) {
+                  var firstIndex = contentHitSlice[0].index;
+                  var start = firstIndex > 20 ? firstIndex - 20 : 0;
+                  var end = firstIndex + 180;
+
+                  postContent = highlightKeyword(content, contentHitSlice, start, end);
+                } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                  postContent = content.slice(0, 200);
+                }
+                
+                postData.title = postTitle;
+                postData.content = postContent;
+                postData.url = postURL;
+                postData.weight = postWeight;
+                matchPosts.push(postData);
+              }
+            });
+          }
+
+          var resultInnerHtml = '<ul>';
+          
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+          $result.html(resultInnerHtml);
+        };
+
+        $input.on('input', searchPost);
+        $input.on('keypress', function (e) {
+          if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+            searchPost();
+          }
+        });
+      }
+    });
+  }
+
+  function closeSearch () {
+    $('body').css('overflow', 'auto');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandOut', {
+        duration: 300
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeOut', {
+        duration: 300
+      });
+  }
+}, false);</script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('load', function () {
+  var pjax = new Pjax({"elements":["a:not([target=_blank])"],"selectors":["head title","meta[name=description]","#main",".pjax-reload"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+  // 是否第一次加载 pjax
+  var isFirstLoad = true;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    isFirstLoad = false;
+
+    $('html').velocity('scroll', {
+      duration: 500,
+      offset: $('#header').height(),
+      easing: 'easeInOutCubic'
+    });
+
+    var loadingBarWidth = 0;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar .progress').css('transform', 'translateX(-100%)');
+    $('.loading-bar').addClass('loading');
+
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 2;
+
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+
+      $('.loading-bar .progress').css(
+        'transform', 'translateX(' + (loadingBarWidth - 100) + '%)'
+      );
+    }, 100);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar .progress').css('transform', 'translateX(0%)');
+    setTimeout(function () {
+      $('.loading-bar').removeClass('loading');
+      $('.loading-bar .progress').css('transform', 'translateX(-100%)');
+    }, 400);
+
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    Stun.utils.pjaxReloadBoot();
+    Stun.utils.pjaxReloadScroll();
+    Stun.utils.pjaxReloadSidebar();
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=1.3.1"></script><script src="/js/stun-boot.js?v=1.3.1"></script><script src="/js/scroll.js?v=1.3.1"></script><script src="/js/header.js?v=1.3.1"></script><script src="/js/sidebar.js?v=1.3.1"></script></body></html>
