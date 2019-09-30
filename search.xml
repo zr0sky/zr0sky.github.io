@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>BurpSuite 插件编写 - 创建选项卡</title>
+      <link href="/2019/09/05/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE/"/>
+      <url>/2019/09/05/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>  有时候，单纯的事件监听并不能满足我们的需求。</p></blockquote><p>创建选项卡需要使用的库：</p><ul><li>ITab</li><li>Java swing 库</li></ul><h1 id="ITab"><a href="#ITab" class="headerlink" title="ITab"></a>ITab</h1><p>ITab只含有两个方法：</p><h2 id="getTabCaption"><a href="#getTabCaption" class="headerlink" title="getTabCaption"></a>getTabCaption</h2><p>用于获取选项卡上的标题</p><p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png" alt="1567670294670"></p><pre><code class="python">def getTabCaption(self):    # Get title of Tab    return &#39;createTab&#39;</code></pre><h2 id="getUiComponent"><a href="#getUiComponent" class="headerlink" title="getUiComponent"></a>getUiComponent</h2><p>用于获取选项卡中的组件（面板）</p><pre><code class="python">def getUiComponent(self):    # get component of tab    return self.mainPanel</code></pre><h1 id="swing"><a href="#swing" class="headerlink" title="swing"></a>swing</h1><p>Java 中的swing库，用来编写GUI界面。<a href="https://www.runoob.com/w3cnote/java-swing-demo-intro.html" target="_blank" rel="noopener">相关教程1</a>，<a href="http://c.biancheng.net/swing/" target="_blank" rel="noopener">相关教程2</a></p><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><pre><code class="python"># -*- coding: utf-8 -*-# Author: zr0sky (i@zr0sky.cn)# Blog: blog.zr0sky.cn# 导入相关库from burp import IBurpExtender, ITabfrom javax.swing import JPanel, JButton, JTextAreaclass BurpExtender(IBurpExtender, ITab):    def registerExtenderCallbacks(self, callbacks):        self._cb = callbacks        self._hp = callbacks.getHelpers()        self._cb.setExtensionName(&#39;newTab&#39;)        self.mainPanel = JPanel() # 创建一个面板，能容纳组件并将组件组合在一起        self.testTextArea = JTextArea() # 创建一个文本框        self.testTextArea.setLineWrap(True) # 设置文本框为自动换行        self.testBtn = JButton(&quot;Click me&quot;, actionPerformed=self.onClick)  # 创建一个按钮并绑定事件        self.mainPanel.add(self.testTextArea)    # 将组件添加到面板中        self.mainPanel.add(self.testBtn)        self._cb.customizeUiComponent(self.mainPanel)        self._cb.addSuiteTab(self)    def onClick(self, event):        print &#39;1111&#39;    def getTabCaption(self):        # Get title of Tab        return &#39;createTab&#39;    def getUiComponent(self):        # get component of tab        return self.mainPanel</code></pre><p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567682752092.png" alt="1567682752092"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+          <category> BurpSuite 插件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> BurpSuite </tag>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BurpSuite 插件编写 - 事件监听</title>
+      <link href="/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/"/>
+      <url>/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/</url>
+      
+        <content type="html"><![CDATA[<h1 id="事件监听相关的库"><a href="#事件监听相关的库" class="headerlink" title="事件监听相关的库"></a>事件监听相关的库</h1><h2 id="IHttpListener"><a href="#IHttpListener" class="headerlink" title="IHttpListener"></a>IHttpListener</h2><p>HTTP的监听器拓展库，监听所有Burp发出的请求和响应。</p><p>可调用<code>IBurpExtenderCallbacks.registerHttpListener()</code> 来注册HTTP监听器。通过<code>processHttpMessage</code>方法来处理HTTP请求或响应。</p><pre><code class="python">void processHttpMessage(int toolFlag,                      boolean messageIsRequest,                      IHttpRequestResponse messageInfo)</code></pre><p><code>toolFlag</code>：发出请求的工具标志, 如: TOOL_PROXY 标志就代表数据是从Proxy发出</p><p><img src="/2019/09/03/BurpSuite-插件编写-事件监听/1567518683382.png" alt="1567518683382"></p><p><code>messageIsRequest</code>：是否为请求包</p><p><code>messageInfo</code>：要处理的请求/响应的详细信息。扩展可以调用此对象上的setter方法来更新当前消息，从而修改burp的行为。对象所包含的方法<a href="https://portswigger.net/burp/extender/api/burp/IHttpRequestResponse.html" target="_blank" rel="noopener">详见</a></p><pre><code class="python">from burp import IBurpExtenderfrom burp import IHttpListenerfrom java.io import PrintWriterclass BurpExtender(IBurpExtender, IHttpListener):    #    # implement IBurpExtender    #    def    registerExtenderCallbacks(self, callbacks):        self._callbacks = callbacks        callbacks.setExtensionName(&quot;Event listeners&quot;)        self._stdout = PrintWriter(callbacks.getStdout(), True)        # 注册HTTP监听器        callbacks.registerHttpListener(self)    #    # implement IHttpListener    #    def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):        # 将信息输出到 输出流中去        self._stdout.println(                (&quot;HTTP request to &quot; if messageIsRequest else &quot;HTTP response from &quot;) +                messageInfo.getHttpService().toString() +                &quot; [&quot; + self._callbacks.getToolName(toolFlag) + &quot;]&quot;)</code></pre><h2 id="IProxyListener"><a href="#IProxyListener" class="headerlink" title="IProxyListener"></a>IProxyListener</h2><p>注册Proxy侦听器，只监听Proxy工具处的请求和响应。然后调用<code>IBurpExtenderCallbacks.RegisterProxyListener()</code>注册Proxy侦听器，通过<code>processProxyMessage</code>方法来处理请求或响应</p><pre><code class="python">from burp import IBurpExtenderfrom burp import IProxyListenerfrom java.io import PrintWriterclass BurpExtender(IBurpExtender, IProxyListener):    #    # implement IBurpExtender    #    def    registerExtenderCallbacks(self, callbacks):        self._callbacks = callbacks        callbacks.setExtensionName(&quot;Event listeners&quot;)        self._stdout = PrintWriter(callbacks.getStdout(), True)        # 注册HTTP监听器        callbacks.RegisterProxyListener(self)    #    # implement IProxyListener    #    def processProxyMessage(self, messageIsRequest, message):        self._stdout.println(                (&quot;Proxy request to &quot; if messageIsRequest else &quot;Proxy response from &quot;) +                message.getMessageInfo().getHttpService().toString())</code></pre><h2 id="IScannerListener"><a href="#IScannerListener" class="headerlink" title="IScannerListener"></a>IScannerListener</h2><p>注册Scanner 侦听器，只监听Scanner 工具处的issues。然后调用<code>IBurpExtenderCallbacks.registerScannerListener()</code>注册Scanner侦听器，通过<code>newScanIssue</code>方法来处理，其含有一个参数<code>IScanIssue</code>类型的<code>issue</code>，<a href="https://portswigger.net/burp/extender/api/burp/IScanIssue.html" target="_blank" rel="noopener">具体详见</a></p><pre><code class="python">from burp import IBurpExtenderfrom burp import IScannerListenerfrom java.io import PrintWriterclass BurpExtender(IBurpExtender, IScannerListener):    #    # implement IBurpExtender    #    def registerExtenderCallbacks(self, callbacks):        # keep a reference to our callbacks object        self._callbacks = callbacks        # set our extension name        callbacks.setExtensionName(&quot;Event listeners&quot;)        # obtain our output stream        self._stdout = PrintWriter(callbacks.getStdout(), True)        # register ourselves as a Scanner listener        callbacks.registerScannerListener(self)    def newScanIssue(self, issue):        self._stdout.println(&quot;New scan issue: &quot; + issue.getIssueName())</code></pre><h2 id="IExtensionStateListener"><a href="#IExtensionStateListener" class="headerlink" title="IExtensionStateListener"></a>IExtensionStateListener</h2><p>注册扩展状态侦听器。将通知侦听器扩展状态的更改。调用<code>IBurpExtenderCallbacks.RegisterExtensionStateListener()</code>注册。<code>extensionUnloaded()</code>方法来处理。<strong>无参数</strong></p><p><strong>注意</strong>：任何启动后台线程或打开系统资源（如文件或数据库连接）的扩展都应该注册一个侦听器，并在卸载扩展时终止线程/关闭资源。<strong>关闭Burp时也会卸载扩展</strong></p><pre><code class="python">def extensionUnloaded(self):    self._stdout.println(&quot;Extension was unloaded&quot;)</code></pre><h2 id="IScopeChangeListener"><a href="#IScopeChangeListener" class="headerlink" title="IScopeChangeListener"></a>IScopeChangeListener</h2><p>调用<code>IBurpExtenderCallbacks.RegisterScopechAngelistener()</code>注册scope更改侦听器。每当Burp的scope内的目标范围发生更改时，都会通知侦听器。使用<code>scopeChanged()</code>方法来处理，<strong>无参数</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+          <category> BurpSuite 插件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> BurpSuite </tag>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BurpSuite 插件编写 - Hello World</title>
+      <link href="/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-Hello-World/"/>
+      <url>/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-Hello-World/</url>
+      
+        <content type="html"><![CDATA[<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>BurpSuite是渗透过程中的一大神器，几乎必不可少。而必要的插件可以使我们事半功倍。虽然Burp中已经有很多优秀的插件供我们使用，但有些情况下我们可以根据自己的需要定制自己的插件。</p><h2 id="前提准备"><a href="#前提准备" class="headerlink" title="前提准备"></a>前提准备</h2><h3 id="Burp-Suite"><a href="#Burp-Suite" class="headerlink" title="Burp Suite"></a>Burp Suite</h3><p>这个就不说了</p><h3 id="Jython"><a href="#Jython" class="headerlink" title="Jython"></a>Jython</h3><p>Jython 是Burp 支持Python 的必要插件。<a href="https://www.jython.org/" target="_blank" rel="noopener">下载官网</a></p><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/1567486883062.png" alt="1567486883062"></p><p>设置Jython路径</p><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/1567486935814.png" alt="1567486935814"></p><h3 id="Python2"><a href="#Python2" class="headerlink" title="Python2"></a>Python2</h3><p>Jython 目前只支持Python2</p><h1 id="0x01-插件编写"><a href="#0x01-插件编写" class="headerlink" title="0x01 插件编写"></a>0x01 插件编写</h1><p>插件API的文档地址：<a href="https://portswigger.net/burp/extender/api/index.html" target="_blank" rel="noopener">Generated Documentation</a></p><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/1567487134501.png" alt="1567487134501"></p><p>里面有详细的介绍</p><h2 id="常用的库"><a href="#常用的库" class="headerlink" title="常用的库"></a>常用的库</h2><pre><code class="Python">from burp import IBurpExtender  # Burp 插件入口from burp import IBurpExtenderCallbacks # IBurpExtender接口的实现类from burp import IHttpListener # 会接收所有通过 BurpSuite 的请求与响应包from burp import IProxyListener  # 只接收所有通过Proxy工具的请求与响应包from burp import IHttpRequestResponse #此接口用于检索和更新有关http消息的详细信息</code></pre><h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><p>使用官方例程来了解插件的基础构成，地址：<a href="https://github.com/PortSwigger/example-hello-world/blob/master/python/HelloWorld.py" target="_blank" rel="noopener">Hello World</a></p><pre><code class="python">from burp import IBurpExtenderfrom java.io import PrintWriterfrom java.lang import RuntimeExceptionclass BurpExtender(IBurpExtender):    #    # implement IBurpExtender    #    def registerExtenderCallbacks(self, callbacks):        # set our extension name        callbacks.setExtensionName(&quot;Hello world extension&quot;)        # obtain our output and error streams        stdout = PrintWriter(callbacks.getStdout(), True)        stderr = PrintWriter(callbacks.getStderr(), True)        # write a message to our output stream        stdout.println(&quot;Hello output&quot;)        # write a message to our error stream        stderr.println(&quot;Hello errors&quot;)        # write a message to the Burp alerts tab        callbacks.issueAlert(&quot;Hello alerts&quot;)        # throw an exception that will appear in our error stream        raise RuntimeException(&quot;Hello exception&quot;)</code></pre><h2 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h2><p>在代码开始需导入<code>IBurpExtender</code>，这是Burpsuite插件所必须的。之后需要一个类，继承从Burp导入的库<code>class BurpExtender(IBurpExtender)</code>。其中必须要有一个<code>registerExtenderCallbacks</code>函数用以注册插件相关信息。其参数是一个<code>IBurpExtenderCallbacks</code>类型的对象，被burp用来传递一组回调方法给扩展，扩展可以使用这些方法在burp中执行各种操作。根据需要调用此接口的方法，以控制Burp。</p><pre><code class="python"># 通过回调方法,设置插件名称callbacks.setExtensionName(&quot;Hello world extension&quot;)</code></pre><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/3b8f2823-3301-41b6-a5a3-beecab473142.png" alt="img"></p><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/91b7cc46-378d-4a21-991a-2ce14c74c393.png" alt="img"></p><pre><code class="Python"># 获取输出流(之后可以输出信息)stdout = PrintWriter(callbacks.getStdout(), True)# 获取错误流(之后可以输出错误信息)stderr = PrintWriter(callbacks.getStderr(), True)</code></pre><p>获取输出/错误流</p><pre><code class="Python"># 输出信息, 可在插件选项卡下Output处查看stdout.println(&quot;Hello output&quot;)# 输出错误, 可在插件选项卡下Error处查看stderr.println(&quot;Hello errors&quot;)</code></pre><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/485a95b8-f7ca-41cb-9f03-bbe255c5035b.png" alt="img"></p><pre><code class="Python"># 通过回调方法, 在Alert选项卡下输出一条信息callbacks.issueAlert(&quot;Hello alerts&quot;)</code></pre><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/b2a1010a-5b1d-43c7-b0ba-18e2158f531c.png" alt="img"></p><pre><code class="python"># 抛出错误, 可在Error选项卡查看raise RuntimeException(&quot;Hello exception&quot;)</code></pre><p><img src="/2019/09/03/BurpSuite-插件编写-Hello-World/5fde7e60-c364-4157-b1aa-aa6c5cc6d309.png" alt="img"></p><p>注：本教程所用例程均为Burpsuite官方例程：<a href="https://portswigger.net/burp/extender#SampleExtensions" target="_blank" rel="noopener">详见</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+          <category> BurpSuite 插件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> BurpSuite </tag>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hexo 插入本地图片</title>
+      <link href="/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/"/>
+      <url>/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Hexo-插入本地图片"><a href="#Hexo-插入本地图片" class="headerlink" title="Hexo 插入本地图片"></a>Hexo 插入本地图片</h1><p>把博客根目录<code>_config.yml</code> 中的<code>post_asset_folder</code>选项设置为<code>true</code></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265242045.png" alt="1567265242045"></p><p>之后安装插件<code>npm install hexo-asset-image --save</code></p><p>安装完成后新建文章，会生成一个与文章标题相同的文件夹，在需要引用时直接将图片复制到同名文件夹。</p><p>之后用markdown语法引用即可。</p><p><code>![image](image.jpg)</code></p><p><font size="5" color="red">这是网上的教程！！但。。</font></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265945811.png" alt="1567265945811"></p><p>审查元素后发现：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266125128.png" alt="1567266125128"></p><p>怪异的地址</p><h1 id="插件修改"><a href="#插件修改" class="headerlink" title="插件修改"></a>插件修改</h1><p>查看<code>hexo g</code>的输出</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266217435.png" alt="1567266217435"></p><p>最后发现是插件的问题，去根目录下<code>node_modules\hexo-asset-image</code>文件夹，调试</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266563451.png" alt="1567266563451"></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266529454.png" alt="1567266529454"></p><p>发现它分割的<code>endPos</code>错误</p><p><code>http://yoursite.com/2019/08/31/BurpSuite-代理原理/--20--15</code>  -&gt;&gt; <code>.com</code></p><p>正确的应该是<code>2019/08/31/BurpSuite-代理原理/</code></p><p>修改代码为：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266762525.png" alt="1567266762525"></p><p>这次终于可以了</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266950392.png" alt="1567266950392"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BurpSuite 代理原理</title>
+      <link href="/2019/08/31/BurpSuite-%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86/"/>
+      <url>/2019/08/31/BurpSuite-%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Burp-Suite-代理原理"><a href="#Burp-Suite-代理原理" class="headerlink" title="Burp Suite 代理原理"></a>Burp Suite 代理原理</h1><h2 id="HTTP-代理"><a href="#HTTP-代理" class="headerlink" title="HTTP 代理"></a>HTTP 代理</h2><p>HTTP 正常请求</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567259709095.png" alt="1567259709095"></p><p>代理Burp Suite时，Burp Suite会监听8080端口，浏览器将流量(数据)发送到8080端口，被Burp suite接受。流量会通过Burp suite，之后再由Burp suite发送到服务器。响应时，同理。</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567259923506.png" alt="1567259923506"></p><h2 id="HTTPS-代理"><a href="#HTTPS-代理" class="headerlink" title="HTTPS 代理"></a>HTTPS 代理</h2><p>HTTPS 是什么：<strong>HTTPS = HTTP + SSL</strong></p><p>在Burp suite刚开始是无法抓HTTPS 的包的，需要安装一个证书。</p><p>无Burp suiteHTTPS交互过程</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567261847238.png" alt="1567261847238"></p><p>有Burp Suite时，Burpsuite有两个证书，一个与浏览器通讯，一个与服务器通讯。</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567262141388.png" alt="1567262141388"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> BurpSuite </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> BurpSuite </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2019/08/31/hello-world/"/>
+      <url>/2019/08/31/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
