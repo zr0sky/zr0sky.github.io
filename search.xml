@@ -8,7 +8,7 @@
       <link href="/2019/09/05/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE/"/>
       <url>/2019/09/05/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>  有时候，单纯的事件监听并不能满足我们的需求。</p></blockquote><p>创建选项卡需要使用的库：</p><ul><li>ITab</li><li>Java swing 库</li></ul><h1 id="ITab"><a href="#ITab" class="headerlink" title="ITab"></a>ITab</h1><p>ITab只含有两个方法：</p><h2 id="getTabCaption"><a href="#getTabCaption" class="headerlink" title="getTabCaption"></a>getTabCaption</h2><p>用于获取选项卡上的标题</p><p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png" alt="1567670294670"></p><pre><code class="python">def getTabCaption(self):    # Get title of Tab    return &#39;createTab&#39;</code></pre><h2 id="getUiComponent"><a href="#getUiComponent" class="headerlink" title="getUiComponent"></a>getUiComponent</h2><p>用于获取选项卡中的组件（面板）</p><pre><code class="python">def getUiComponent(self):    # get component of tab    return self.mainPanel</code></pre><h1 id="swing"><a href="#swing" class="headerlink" title="swing"></a>swing</h1><p>Java 中的swing库，用来编写GUI界面。<a href="https://www.runoob.com/w3cnote/java-swing-demo-intro.html" target="_blank" rel="noopener">相关教程1</a>，<a href="http://c.biancheng.net/swing/" target="_blank" rel="noopener">相关教程2</a></p><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><pre><code class="python"># -*- coding: utf-8 -*-# Author: zr0sky (i@zr0sky.cn)# Blog: blog.zr0sky.cn# 导入相关库from burp import IBurpExtender, ITabfrom javax.swing import JPanel, JButton, JTextAreaclass BurpExtender(IBurpExtender, ITab):    def registerExtenderCallbacks(self, callbacks):        self._cb = callbacks        self._hp = callbacks.getHelpers()        self._cb.setExtensionName(&#39;newTab&#39;)        self.mainPanel = JPanel() # 创建一个面板，能容纳组件并将组件组合在一起        self.testTextArea = JTextArea() # 创建一个文本框        self.testTextArea.setLineWrap(True) # 设置文本框为自动换行        self.testBtn = JButton(&quot;Click me&quot;, actionPerformed=self.onClick)  # 创建一个按钮并绑定事件        self.mainPanel.add(self.testTextArea)    # 将组件添加到面板中        self.mainPanel.add(self.testBtn)        self._cb.customizeUiComponent(self.mainPanel)        self._cb.addSuiteTab(self)    def onClick(self, event):        print &#39;1111&#39;    def getTabCaption(self):        # Get title of Tab        return &#39;createTab&#39;    def getUiComponent(self):        # get component of tab        return self.mainPanel</code></pre><p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567682752092.png" alt="1567682752092"></p>]]></content>
+        <content type="html"><![CDATA[<p>创建选项卡需要使用的库：</p><ul><li>ITab</li><li>Java swing 库</li></ul><h1 id="ITab"><a href="#ITab" class="headerlink" title="ITab"></a>ITab</h1><p>ITab只含有两个方法：</p><h2 id="getTabCaption"><a href="#getTabCaption" class="headerlink" title="getTabCaption"></a>getTabCaption</h2><p>用于获取选项卡上的标题</p><p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png" alt="1567670294670"></p><pre><code class="python">def getTabCaption(self):    # Get title of Tab    return &#39;createTab&#39;</code></pre><h2 id="getUiComponent"><a href="#getUiComponent" class="headerlink" title="getUiComponent"></a>getUiComponent</h2><p>用于获取选项卡中的组件（面板）</p><pre><code class="python">def getUiComponent(self):    # get component of tab    return self.mainPanel</code></pre><h1 id="swing"><a href="#swing" class="headerlink" title="swing"></a>swing</h1><p>Java 中的swing库，用来编写GUI界面。<a href="https://www.runoob.com/w3cnote/java-swing-demo-intro.html" target="_blank" rel="noopener">相关教程1</a>，<a href="http://c.biancheng.net/swing/" target="_blank" rel="noopener">相关教程2</a></p><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><pre><code class="python"># -*- coding: utf-8 -*-# Author: zr0sky (i@zr0sky.cn)# Blog: blog.zr0sky.cn# 导入相关库from burp import IBurpExtender, ITabfrom javax.swing import JPanel, JButton, JTextAreaclass BurpExtender(IBurpExtender, ITab):    def registerExtenderCallbacks(self, callbacks):        self._cb = callbacks        self._hp = callbacks.getHelpers()        self._cb.setExtensionName(&#39;newTab&#39;)        self.mainPanel = JPanel() # 创建一个面板，能容纳组件并将组件组合在一起        self.testTextArea = JTextArea() # 创建一个文本框        self.testTextArea.setLineWrap(True) # 设置文本框为自动换行        self.testBtn = JButton(&quot;Click me&quot;, actionPerformed=self.onClick)  # 创建一个按钮并绑定事件        self.mainPanel.add(self.testTextArea)    # 将组件添加到面板中        self.mainPanel.add(self.testBtn)        self._cb.customizeUiComponent(self.mainPanel)        self._cb.addSuiteTab(self)    def onClick(self, event):        print &#39;1111&#39;    def getTabCaption(self):        # Get title of Tab        return &#39;createTab&#39;    def getUiComponent(self):        # get component of tab        return self.mainPanel</code></pre><p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567682752092.png" alt="1567682752092"></p>]]></content>
       
       
       <categories>
@@ -22,9 +22,9 @@
       
         <tags>
             
-            <tag> BurpSuite </tag>
-            
             <tag> Python </tag>
+            
+            <tag> BurpSuite </tag>
             
         </tags>
       
@@ -51,9 +51,9 @@
       
         <tags>
             
-            <tag> BurpSuite </tag>
-            
             <tag> Python </tag>
+            
+            <tag> BurpSuite </tag>
             
         </tags>
       
@@ -80,9 +80,9 @@
       
         <tags>
             
-            <tag> BurpSuite </tag>
-            
             <tag> Python </tag>
+            
+            <tag> BurpSuite </tag>
             
         </tags>
       
@@ -95,38 +95,13 @@
       <link href="/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/"/>
       <url>/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/</url>
       
-        <content type="html"><![CDATA[<h1 id="Hexo-插入本地图片"><a href="#Hexo-插入本地图片" class="headerlink" title="Hexo 插入本地图片"></a>Hexo 插入本地图片</h1><p>把博客根目录<code>_config.yml</code> 中的<code>post_asset_folder</code>选项设置为<code>true</code></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265242045.png" alt="1567265242045"></p><p>之后安装插件<code>npm install hexo-asset-image --save</code></p><p>安装完成后新建文章，会生成一个与文章标题相同的文件夹，在需要引用时直接将图片复制到同名文件夹。</p><p>之后用markdown语法引用即可。</p><p><code>![image](image.jpg)</code></p><p><font size="5" color="red">这是网上的教程！！但。。</font></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265945811.png" alt="1567265945811"></p><p>审查元素后发现：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266125128.png" alt="1567266125128"></p><p>怪异的地址</p><h1 id="插件修改"><a href="#插件修改" class="headerlink" title="插件修改"></a>插件修改</h1><p>查看<code>hexo g</code>的输出</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266217435.png" alt="1567266217435"></p><p>最后发现是插件的问题，去根目录下<code>node_modules\hexo-asset-image</code>文件夹，调试</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266563451.png" alt="1567266563451"></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266529454.png" alt="1567266529454"></p><p>发现它分割的<code>endPos</code>错误</p><p><code>http://yoursite.com/2019/08/31/BurpSuite-代理原理/--20--15</code>  -&gt;&gt; <code>.com</code></p><p>正确的应该是<code>2019/08/31/BurpSuite-代理原理/</code></p><p>修改代码为：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266762525.png" alt="1567266762525"></p><p>这次终于可以了</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266950392.png" alt="1567266950392"></p>]]></content>
+        <content type="html"><![CDATA[<p>把博客根目录<code>_config.yml</code> 中的<code>post_asset_folder</code>选项设置为<code>true</code></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265242045.png" alt="1567265242045"></p><p>之后安装插件<code>npm install hexo-asset-image --save</code></p><p>安装完成后新建文章，会生成一个与文章标题相同的文件夹，在需要引用时直接将图片复制到同名文件夹。</p><p>之后用markdown语法引用即可。</p><p><code>![image](image.jpg)</code></p><p><font size="5" color="red">这是网上的教程！！但。。</font></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265945811.png" alt="1567265945811"></p><p>审查元素后发现：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266125128.png" alt="1567266125128"></p><p>怪异的地址</p><h1 id="插件修改"><a href="#插件修改" class="headerlink" title="插件修改"></a>插件修改</h1><p>查看<code>hexo g</code>的输出</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266217435.png" alt="1567266217435"></p><p>最后发现是插件的问题，去根目录下<code>node_modules\hexo-asset-image</code>文件夹，调试</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266563451.png" alt="1567266563451"></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266529454.png" alt="1567266529454"></p><p>发现它分割的<code>endPos</code>错误</p><p><code>http://yoursite.com/2019/08/31/BurpSuite-代理原理/--20--15</code>  -&gt;&gt; <code>.com</code></p><p>正确的应该是<code>2019/08/31/BurpSuite-代理原理/</code></p><p>修改代码为：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266762525.png" alt="1567266762525"></p><p>这次终于可以了</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266950392.png" alt="1567266950392"></p>]]></content>
       
       
       
         <tags>
             
             <tag> Hexo </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>BurpSuite 代理原理</title>
-      <link href="/2019/08/31/BurpSuite-%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86/"/>
-      <url>/2019/08/31/BurpSuite-%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86/</url>
-      
-        <content type="html"><![CDATA[<h1 id="Burp-Suite-代理原理"><a href="#Burp-Suite-代理原理" class="headerlink" title="Burp Suite 代理原理"></a>Burp Suite 代理原理</h1><h2 id="HTTP-代理"><a href="#HTTP-代理" class="headerlink" title="HTTP 代理"></a>HTTP 代理</h2><p>HTTP 正常请求</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567259709095.png" alt="1567259709095"></p><p>代理Burp Suite时，Burp Suite会监听8080端口，浏览器将流量(数据)发送到8080端口，被Burp suite接受。流量会通过Burp suite，之后再由Burp suite发送到服务器。响应时，同理。</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567259923506.png" alt="1567259923506"></p><h2 id="HTTPS-代理"><a href="#HTTPS-代理" class="headerlink" title="HTTPS 代理"></a>HTTPS 代理</h2><p>HTTPS 是什么：<strong>HTTPS = HTTP + SSL</strong></p><p>在Burp suite刚开始是无法抓HTTPS 的包的，需要安装一个证书。</p><p>无Burp suiteHTTPS交互过程</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567261847238.png" alt="1567261847238"></p><p>有Burp Suite时，Burpsuite有两个证书，一个与浏览器通讯，一个与服务器通讯。</p><p><img src="/2019/08/31/BurpSuite-代理原理/1567262141388.png" alt="1567262141388"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> BurpSuite </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> BurpSuite </tag>
             
         </tags>
       
