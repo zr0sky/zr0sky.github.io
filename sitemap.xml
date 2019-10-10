@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/</loc>
+    <loc>http://yoursite.com/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/</loc>
     
-    <lastmod>2019-10-09T11:19:40.903Z</lastmod>
+    <lastmod>2019-10-10T11:52:03.007Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/</loc>
+    <loc>http://yoursite.com/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-Hello-World/</loc>
     
-    <lastmod>2019-10-09T11:19:19.773Z</lastmod>
+    <lastmod>2019-10-10T11:20:25.478Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/</loc>
+    
+    <lastmod>2019-10-09T11:19:40.903Z</lastmod>
     
   </url>
   
@@ -26,13 +33,6 @@
     <loc>http://yoursite.com/about/index.html</loc>
     
     <lastmod>2019-09-30T06:11:18.532Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/09/03/BurpSuite-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99-Hello-World/</loc>
-    
-    <lastmod>2019-09-05T04:15:20.423Z</lastmod>
     
   </url>
   
