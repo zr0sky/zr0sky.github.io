@@ -18,23 +18,23 @@
   
   
   <title>BurpSuite 插件编写 - 创建选项卡 | zr0sky&#39;s Blog</title>
-  <meta name="description" content="创建选项卡需要使用的库：  ITab Java swing 库  ITabITab只含有两个方法： getTabCaption用于获取选项卡上的标题  def getTabCaption(self):     # Get title of Tab     return &amp;#39;createTab&amp;#39; getUiComponent用于获取选项卡中的组件（面板） def getUiCompon">
+  <meta name="description" content="创建选项卡需要使用的库：  ITab Java swing 库   ITab ITab只含有两个方法：  getTabCaption 用于获取选项卡上的标题  def getTabCaption(self):     # Get title of Tab     return &apos;createTab&apos;   getUiComponent 用于获取选项卡中的组件（面板） def getUiCompone">
 <meta name="keywords" content="Python,BurpSuite">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BurpSuite 插件编写 - 创建选项卡">
-<meta property="og:url" content="http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/index.html">
+<meta property="og:url" content="https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/index.html">
 <meta property="og:site_name" content="zr0sky">
-<meta property="og:description" content="创建选项卡需要使用的库：  ITab Java swing 库  ITabITab只含有两个方法： getTabCaption用于获取选项卡上的标题  def getTabCaption(self):     # Get title of Tab     return &amp;#39;createTab&amp;#39; getUiComponent用于获取选项卡中的组件（面板） def getUiCompon">
+<meta property="og:description" content="创建选项卡需要使用的库：  ITab Java swing 库   ITab ITab只含有两个方法：  getTabCaption 用于获取选项卡上的标题  def getTabCaption(self):     # Get title of Tab     return &apos;createTab&apos;   getUiComponent 用于获取选项卡中的组件（面板） def getUiCompone">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png">
-<meta property="og:image" content="http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/1567682752092.png">
+<meta property="og:image" content="https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png">
+<meta property="og:image" content="https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/1567682752092.png">
 <meta property="og:updated_time" content="2019-10-09T11:18:21.196Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BurpSuite 插件编写 - 创建选项卡">
-<meta name="twitter:description" content="创建选项卡需要使用的库：  ITab Java swing 库  ITabITab只含有两个方法： getTabCaption用于获取选项卡上的标题  def getTabCaption(self):     # Get title of Tab     return &amp;#39;createTab&amp;#39; getUiComponent用于获取选项卡中的组件（面板） def getUiCompon">
-<meta name="twitter:image" content="http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png">
+<meta name="twitter:description" content="创建选项卡需要使用的库：  ITab Java swing 库   ITab ITab只含有两个方法：  getTabCaption 用于获取选项卡上的标题  def getTabCaption(self):     # Get title of Tab     return &apos;createTab&apos;   getUiComponent 用于获取选项卡中的组件（面板） def getUiCompone">
+<meta name="twitter:image" content="https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/index.html">
+  <link rel="canonical" href="https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/index.html">
   
     <link rel="alternate" href="/atom.xml" title="zr0sky" type="application/atom+xml">
   
@@ -60,7 +60,7 @@
           <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
         </a>
         <h2 id="name" class="hidden-xs hidden-sm">zr0sky</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Dog</h3>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Dog &amp; Designer</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Wuhan, China</small>
       </div>
       
@@ -360,57 +360,65 @@
 <li>ITab</li>
 <li>Java swing 库</li>
 </ul>
-<h1 id="ITab"><a href="#ITab" class="headerlink" title="ITab"></a>ITab</h1><p>ITab只含有两个方法：</p>
-<h2 id="getTabCaption"><a href="#getTabCaption" class="headerlink" title="getTabCaption"></a>getTabCaption</h2><p>用于获取选项卡上的标题</p>
+<h1 id="itab"><a class="markdownIt-Anchor" href="#itab"></a> ITab</h1>
+<p>ITab只含有两个方法：</p>
+<h2 id="gettabcaption"><a class="markdownIt-Anchor" href="#gettabcaption"></a> getTabCaption</h2>
+<p>用于获取选项卡上的标题</p>
 <p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567670294670.png" alt="1567670294670"></p>
-<pre><code class="python">def getTabCaption(self):
-    # Get title of Tab
-    return &#39;createTab&#39;</code></pre>
-<h2 id="getUiComponent"><a href="#getUiComponent" class="headerlink" title="getUiComponent"></a>getUiComponent</h2><p>用于获取选项卡中的组件（面板）</p>
-<pre><code class="python">def getUiComponent(self):
-    # get component of tab
-    return self.mainPanel</code></pre>
-<h1 id="swing"><a href="#swing" class="headerlink" title="swing"></a>swing</h1><p>Java 中的swing库，用来编写GUI界面。<a href="https://www.runoob.com/w3cnote/java-swing-demo-intro.html" target="_blank" rel="noopener">相关教程1</a>，<a href="http://c.biancheng.net/swing/" target="_blank" rel="noopener">相关教程2</a></p>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><pre><code class="python"># -*- coding: utf-8 -*-
-# Author: zr0sky (i@zr0sky.cn)
-# Blog: blog.zr0sky.cn
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getTabCaption</span><span class="hljs-params">(self)</span>:</span>
+    <span class="hljs-comment"># Get title of Tab</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'createTab'</span>
+</code></pre>
+<h2 id="getuicomponent"><a class="markdownIt-Anchor" href="#getuicomponent"></a> getUiComponent</h2>
+<p>用于获取选项卡中的组件（面板）</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getUiComponent</span><span class="hljs-params">(self)</span>:</span>
+    <span class="hljs-comment"># get component of tab</span>
+    <span class="hljs-keyword">return</span> self.mainPanel
+</code></pre>
+<h1 id="swing"><a class="markdownIt-Anchor" href="#swing"></a> swing</h1>
+<p>Java 中的swing库，用来编写GUI界面。<a href="https://www.runoob.com/w3cnote/java-swing-demo-intro.html" target="_blank" rel="noopener">相关教程1</a>，<a href="http://c.biancheng.net/swing/" target="_blank" rel="noopener">相关教程2</a></p>
+<h1 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h1>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-comment"># Author: zr0sky (i@zr0sky.cn)</span>
+<span class="hljs-comment"># Blog: blog.zr0sky.cn</span>
 
 
-# 导入相关库
-from burp import IBurpExtender, ITab
-from javax.swing import JPanel, JButton, JTextArea
+<span class="hljs-comment"># 导入相关库</span>
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IBurpExtender, ITab
+<span class="hljs-keyword">from</span> javax.swing <span class="hljs-keyword">import</span> JPanel, JButton, JTextArea
 
-class BurpExtender(IBurpExtender, ITab):
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BurpExtender</span><span class="hljs-params">(IBurpExtender, ITab)</span>:</span>
 
-    def registerExtenderCallbacks(self, callbacks):
-
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">registerExtenderCallbacks</span><span class="hljs-params">(self, callbacks)</span>:</span>
+        
         self._cb = callbacks
         self._hp = callbacks.getHelpers()
-        self._cb.setExtensionName(&#39;newTab&#39;)
+        self._cb.setExtensionName(<span class="hljs-string">'newTab'</span>)
 
-        self.mainPanel = JPanel() # 创建一个面板，能容纳组件并将组件组合在一起
+        self.mainPanel = JPanel() <span class="hljs-comment"># 创建一个面板，能容纳组件并将组件组合在一起</span>
 
-        self.testTextArea = JTextArea() # 创建一个文本框
-        self.testTextArea.setLineWrap(True) # 设置文本框为自动换行
+        self.testTextArea = JTextArea() <span class="hljs-comment"># 创建一个文本框</span>
+        self.testTextArea.setLineWrap(<span class="hljs-literal">True</span>) <span class="hljs-comment"># 设置文本框为自动换行</span>
 
-        self.testBtn = JButton(&quot;Click me&quot;, actionPerformed=self.onClick)  # 创建一个按钮并绑定事件
+        self.testBtn = JButton(<span class="hljs-string">"Click me"</span>, actionPerformed=self.onClick)  <span class="hljs-comment"># 创建一个按钮并绑定事件</span>
 
-        self.mainPanel.add(self.testTextArea)    # 将组件添加到面板中
+        self.mainPanel.add(self.testTextArea)    <span class="hljs-comment"># 将组件添加到面板中</span>
         self.mainPanel.add(self.testBtn)
 
         self._cb.customizeUiComponent(self.mainPanel)
         self._cb.addSuiteTab(self)
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">onClick</span><span class="hljs-params">(self, event)</span>:</span>
+        <span class="hljs-keyword">print</span> <span class="hljs-string">'1111'</span>
 
-    def onClick(self, event):
-        print &#39;1111&#39;
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getTabCaption</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># Get title of Tab</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'createTab'</span>
 
-    def getTabCaption(self):
-        # Get title of Tab
-        return &#39;createTab&#39;
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getUiComponent</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-comment"># get component of tab</span>
+        <span class="hljs-keyword">return</span> self.mainPanel
 
-    def getUiComponent(self):
-        # get component of tab
-        return self.mainPanel
 </code></pre>
 <p><img src="/2019/09/05/BurpSuite-插件编写-创建标签/1567682752092.png" alt="1567682752092"></p>
 
@@ -422,7 +430,7 @@ class BurpExtender(IBurpExtender, ITab):
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/" title="BurpSuite 插件编写 - 创建选项卡" target="_blank" rel="external">http://yoursite.com/2019/09/05/BurpSuite-插件编写-创建标签/</a>
+      <a href="https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/" title="BurpSuite 插件编写 - 创建选项卡" target="_blank" rel="external">https://blog.zr0sky.cn/2019/09/05/BurpSuite-插件编写-创建标签/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -441,8 +449,8 @@ class BurpExtender(IBurpExtender, ITab):
         </a>
       </div>
       <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/zr0sky" target="_blank"><span class="text-dark">zr0sky</span><small class="ml-1x">Web Dog</small></a></h3>
-        <div>个人简介。</div>
+        <h3 class="media-heading"><a href="https://github.com/zr0sky" target="_blank"><span class="text-dark">zr0sky</span><small class="ml-1x">Web Dog &amp; Designer</small></a></h3>
+        <div>A Web Dog</div>
       </div>
     </figure>
   </div>

@@ -18,24 +18,24 @@
   
   
   <title>BurpSuite 插件编写 - 事件监听 | zr0sky&#39;s Blog</title>
-  <meta name="description" content="事件监听相关的库：  IHttpListener IProxyListener IScannerListener IExtensionStateListener IScopeChangeListener  在使用相应的库时，需要让继承相应的类,如需要IHttpListener时： class BurpExtender(IBurpExtender, IHttpListener) IHttpListe">
+  <meta name="description" content="事件监听相关的库：  IHttpListener IProxyListener IScannerListener IExtensionStateListener IScopeChangeListener  在使用相应的库时，需要让继承相应的类,如需要IHttpListener时： class BurpExtender(IBurpExtender, IHttpListener)  IHttpList">
 <meta name="keywords" content="Python,BurpSuite">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BurpSuite 插件编写 - 事件监听">
-<meta property="og:url" content="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/index.html">
+<meta property="og:url" content="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/index.html">
 <meta property="og:site_name" content="zr0sky">
-<meta property="og:description" content="事件监听相关的库：  IHttpListener IProxyListener IScannerListener IExtensionStateListener IScopeChangeListener  在使用相应的库时，需要让继承相应的类,如需要IHttpListener时： class BurpExtender(IBurpExtender, IHttpListener) IHttpListe">
+<meta property="og:description" content="事件监听相关的库：  IHttpListener IProxyListener IScannerListener IExtensionStateListener IScopeChangeListener  在使用相应的库时，需要让继承相应的类,如需要IHttpListener时： class BurpExtender(IBurpExtender, IHttpListener)  IHttpList">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/1567518683382.png">
-<meta property="og:image" content="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/1570707649775.png">
-<meta property="og:image" content="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/1570708232532.png">
+<meta property="og:image" content="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/1567518683382.png">
+<meta property="og:image" content="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/1570707649775.png">
+<meta property="og:image" content="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/1570708232532.png">
 <meta property="og:updated_time" content="2019-10-10T11:52:03.007Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BurpSuite 插件编写 - 事件监听">
-<meta name="twitter:description" content="事件监听相关的库：  IHttpListener IProxyListener IScannerListener IExtensionStateListener IScopeChangeListener  在使用相应的库时，需要让继承相应的类,如需要IHttpListener时： class BurpExtender(IBurpExtender, IHttpListener) IHttpListe">
-<meta name="twitter:image" content="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/1567518683382.png">
+<meta name="twitter:description" content="事件监听相关的库：  IHttpListener IProxyListener IScannerListener IExtensionStateListener IScopeChangeListener  在使用相应的库时，需要让继承相应的类,如需要IHttpListener时： class BurpExtender(IBurpExtender, IHttpListener)  IHttpList">
+<meta name="twitter:image" content="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/1567518683382.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/index.html">
+  <link rel="canonical" href="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/index.html">
   
     <link rel="alternate" href="/atom.xml" title="zr0sky" type="application/atom+xml">
   
@@ -61,7 +61,7 @@
           <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
         </a>
         <h2 id="name" class="hidden-xs hidden-sm">zr0sky</h2>
-        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Dog</h3>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Dog &amp; Designer</h3>
         <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Wuhan, China</small>
       </div>
       
@@ -366,151 +366,163 @@
 </ul>
 <p>在使用相应的库时，需要让继承相应的类,如需要<code>IHttpListener</code>时：</p>
 <p><code>class BurpExtender(IBurpExtender, IHttpListener)</code></p>
-<h2 id="IHttpListener"><a href="#IHttpListener" class="headerlink" title="IHttpListener"></a>IHttpListener</h2><p>HTTP的监听器拓展库，<strong>监听所有Burp发出的请求和响应</strong>。</p>
+<h2 id="ihttplistener"><a class="markdownIt-Anchor" href="#ihttplistener"></a> IHttpListener</h2>
+<p>HTTP的监听器拓展库，<strong>监听所有Burp发出的请求和响应</strong>。</p>
 <p>可调用<code>IBurpExtenderCallbacks.registerHttpListener()</code> 来注册HTTP监听器。通过<code>processHttpMessage</code>方法来处理HTTP请求或响应。</p>
-<pre><code class="python">void processHttpMessage(int toolFlag,
+<pre class="highlight"><code class="python">void processHttpMessage(int toolFlag,
                       boolean messageIsRequest,
-                      IHttpRequestResponse messageInfo)</code></pre>
+                      IHttpRequestResponse messageInfo)
+</code></pre>
 <p><code>toolFlag</code>：发出请求的工具标志, 如: TOOL_PROXY 标志就代表数据是从Proxy发出</p>
 <p><img src="/2019/09/03/BurpSuite-插件编写-事件监听/1567518683382.png" alt="1567518683382"></p>
 <p><code>messageIsRequest</code>：是否为请求包</p>
 <p><code>messageInfo</code>：要处理的请求/响应的详细信息。扩展可以调用此对象上的setter方法来更新当前消息，从而修改burp的行为。对象所包含的方法<a href="https://portswigger.net/burp/extender/api/burp/IHttpRequestResponse.html" target="_blank" rel="noopener">详见</a></p>
-<pre><code class="python">from burp import IBurpExtender
-from burp import IHttpListener
-from java.io import PrintWriter
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IBurpExtender
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IHttpListener
+<span class="hljs-keyword">from</span> java.io <span class="hljs-keyword">import</span> PrintWriter
 
-class BurpExtender(IBurpExtender, IHttpListener):
-
-    #
-    # implement IBurpExtender
-    #
-
-    def    registerExtenderCallbacks(self, callbacks):
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BurpExtender</span><span class="hljs-params">(IBurpExtender, IHttpListener)</span>:</span>
+    
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># implement IBurpExtender</span>
+    <span class="hljs-comment">#</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span>	<span class="hljs-title">registerExtenderCallbacks</span><span class="hljs-params">(self, callbacks)</span>:</span>
         self._callbacks = callbacks
-
-        callbacks.setExtensionName(&quot;Event listeners&quot;)
-
-        self._stdout = PrintWriter(callbacks.getStdout(), True)
-        # 注册HTTP监听器
+        
+        callbacks.setExtensionName(<span class="hljs-string">"Event listeners"</span>)
+        
+        self._stdout = PrintWriter(callbacks.getStdout(), <span class="hljs-literal">True</span>)
+        <span class="hljs-comment"># 注册HTTP监听器</span>
         callbacks.registerHttpListener(self)
+    
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># implement IHttpListener</span>
+    <span class="hljs-comment">#</span>
 
-    #
-    # implement IHttpListener
-    #
-
-    def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):
-        # 将信息输出到 输出流中去
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">processHttpMessage</span><span class="hljs-params">(self, toolFlag, messageIsRequest, messageInfo)</span>:</span>
+        <span class="hljs-comment"># 将信息输出到 输出流中去</span>
         self._stdout.println(
-                (&quot;HTTP request to &quot; if messageIsRequest else &quot;HTTP response from &quot;) +
+                (<span class="hljs-string">"HTTP request to "</span> <span class="hljs-keyword">if</span> messageIsRequest <span class="hljs-keyword">else</span> <span class="hljs-string">"HTTP response from "</span>) +
                 messageInfo.getHttpService().toString() +
-                &quot; [&quot; + self._callbacks.getToolName(toolFlag) + &quot;]&quot;)
+                <span class="hljs-string">" ["</span> + self._callbacks.getToolName(toolFlag) + <span class="hljs-string">"]"</span>)
+
 
 </code></pre>
-<h2 id="IProxyListener"><a href="#IProxyListener" class="headerlink" title="IProxyListener"></a>IProxyListener</h2><p>注册Proxy侦听器，只监听Proxy工具发出的的请求和响应。调用<code>IBurpExtenderCallbacks.registerProxyListener()</code>注册Proxy侦听器，通过<code>processProxyMessage</code>方法来处理请求或响应</p>
-<pre><code class="python">from burp import IBurpExtender
-from burp import IProxyListener
-from java.io import PrintWriter
+<h2 id="iproxylistener"><a class="markdownIt-Anchor" href="#iproxylistener"></a> IProxyListener</h2>
+<p>注册Proxy侦听器，只监听Proxy工具发出的的请求和响应。调用<code>IBurpExtenderCallbacks.registerProxyListener()</code>注册Proxy侦听器，通过<code>processProxyMessage</code>方法来处理请求或响应</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IBurpExtender
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IProxyListener
+<span class="hljs-keyword">from</span> java.io <span class="hljs-keyword">import</span> PrintWriter
 
-class BurpExtender(IBurpExtender, IProxyListener):
-
-    #
-    # implement IBurpExtender
-    #
-
-    def    registerExtenderCallbacks(self, callbacks):
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BurpExtender</span><span class="hljs-params">(IBurpExtender, IProxyListener)</span>:</span>
+    
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># implement IBurpExtender</span>
+    <span class="hljs-comment">#</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span>	<span class="hljs-title">registerExtenderCallbacks</span><span class="hljs-params">(self, callbacks)</span>:</span>
         self._callbacks = callbacks
-
-        callbacks.setExtensionName(&quot;Event listeners&quot;)
-
-        self._stdout = PrintWriter(callbacks.getStdout(), True)
-        # 注册HTTP监听器
+        
+        callbacks.setExtensionName(<span class="hljs-string">"Event listeners"</span>)
+        
+        self._stdout = PrintWriter(callbacks.getStdout(), <span class="hljs-literal">True</span>)
+        <span class="hljs-comment"># 注册HTTP监听器</span>
         callbacks.registerProxyListener(self)
+    
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># implement IProxyListener</span>
+    <span class="hljs-comment">#</span>
 
-    #
-    # implement IProxyListener
-    #
-
-    def processProxyMessage(self, messageIsRequest, message):
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">processProxyMessage</span><span class="hljs-params">(self, messageIsRequest, message)</span>:</span>
         self._stdout.println(
-                (&quot;Proxy request to &quot; if messageIsRequest else &quot;Proxy response from &quot;) +
+                (<span class="hljs-string">"Proxy request to "</span> <span class="hljs-keyword">if</span> messageIsRequest <span class="hljs-keyword">else</span> <span class="hljs-string">"Proxy response from "</span>) +
                 message.getMessageInfo().getHttpService().toString())
 
+
 </code></pre>
-<h2 id="IScannerListener"><a href="#IScannerListener" class="headerlink" title="IScannerListener"></a>IScannerListener</h2><p>注册Scanner 侦听器，只监听Scanner 工具发出的issues。调用<code>IBurpExtenderCallbacks.registerScannerListener()</code>注册Scanner侦听器，通过<code>newScanIssue</code>方法来处理，其含有一个参数<code>IScanIssue</code>类型的<code>issue</code>，<a href="https://portswigger.net/burp/extender/api/burp/IScanIssue.html" target="_blank" rel="noopener">具体详见</a></p>
-<pre><code class="python">from burp import IBurpExtender
-from burp import IScannerListener
-from java.io import PrintWriter
+<h2 id="iscannerlistener"><a class="markdownIt-Anchor" href="#iscannerlistener"></a> IScannerListener</h2>
+<p>注册Scanner 侦听器，只监听Scanner 工具发出的issues。调用<code>IBurpExtenderCallbacks.registerScannerListener()</code>注册Scanner侦听器，通过<code>newScanIssue</code>方法来处理，其含有一个参数<code>IScanIssue</code>类型的<code>issue</code>，<a href="https://portswigger.net/burp/extender/api/burp/IScanIssue.html" target="_blank" rel="noopener">具体详见</a></p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IBurpExtender
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IScannerListener
+<span class="hljs-keyword">from</span> java.io <span class="hljs-keyword">import</span> PrintWriter
 
-class BurpExtender(IBurpExtender, IScannerListener):
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BurpExtender</span><span class="hljs-params">(IBurpExtender, IScannerListener)</span>:</span>
 
-    #
-    # implement IBurpExtender
-    #
-
-    def registerExtenderCallbacks(self, callbacks):
-        # keep a reference to our callbacks object
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># implement IBurpExtender</span>
+    <span class="hljs-comment">#</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">registerExtenderCallbacks</span><span class="hljs-params">(self, callbacks)</span>:</span>
+        <span class="hljs-comment"># keep a reference to our callbacks object</span>
         self._callbacks = callbacks
+        
+        <span class="hljs-comment"># set our extension name</span>
+        callbacks.setExtensionName(<span class="hljs-string">"Event listeners"</span>)
+        
+        <span class="hljs-comment"># obtain our output stream</span>
+        self._stdout = PrintWriter(callbacks.getStdout(), <span class="hljs-literal">True</span>)
 
-        # set our extension name
-        callbacks.setExtensionName(&quot;Event listeners&quot;)
-
-        # obtain our output stream
-        self._stdout = PrintWriter(callbacks.getStdout(), True)
-
-        # register ourselves as a Scanner listener
+        <span class="hljs-comment"># register ourselves as a Scanner listener</span>
         callbacks.registerScannerListener(self)
-
-    def newScanIssue(self, issue):
-        self._stdout.println(&quot;New scan issue: &quot; + issue.getIssueName())</code></pre>
-<h2 id="IExtensionStateListener"><a href="#IExtensionStateListener" class="headerlink" title="IExtensionStateListener"></a>IExtensionStateListener</h2><p>注册扩展状态侦听器。将通知侦听器扩展状态的更改。调用<code>IBurpExtenderCallbacks.registerExtensionStateListener()</code>注册。<code>extensionUnloaded()</code>方法来处理。<strong>无参数</strong></p>
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">newScanIssue</span><span class="hljs-params">(self, issue)</span>:</span>
+        self._stdout.println(<span class="hljs-string">"New scan issue: "</span> + issue.getIssueName())
+</code></pre>
+<h2 id="iextensionstatelistener"><a class="markdownIt-Anchor" href="#iextensionstatelistener"></a> IExtensionStateListener</h2>
+<p>注册扩展状态侦听器。将通知侦听器扩展状态的更改。调用<code>IBurpExtenderCallbacks.registerExtensionStateListener()</code>注册。<code>extensionUnloaded()</code>方法来处理。<strong>无参数</strong></p>
 <p><strong>注意</strong>：任何启动后台线程或打开系统资源（如文件或数据库连接）的扩展都应该注册一个侦听器，并在卸载扩展时终止线程/关闭资源。<strong>关闭Burp时也会卸载扩展</strong></p>
-<pre><code class="python">def extensionUnloaded(self):
-    self._stdout.println(&quot;Extension was unloaded&quot;)</code></pre>
-<h2 id="IScopeChangeListener"><a href="#IScopeChangeListener" class="headerlink" title="IScopeChangeListener"></a>IScopeChangeListener</h2><p>调用<code>IBurpExtenderCallbacks.registerScopeChangeListener()</code>注册scope更改侦听器。每当Burp的scope内的目标范围发生更改时，都会通知侦听器。使用<code>scopeChanged()</code>方法来处理，<strong>无参数</strong></p>
-<pre><code class="python"># -*- coding: utf-8 -*-
-# Author: zr0sky (i@zr0sky.cn)
-# Blog: blog.zr0sky.cn
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extensionUnloaded</span><span class="hljs-params">(self)</span>:</span>
+    self._stdout.println(<span class="hljs-string">"Extension was unloaded"</span>)
+</code></pre>
+<h2 id="iscopechangelistener"><a class="markdownIt-Anchor" href="#iscopechangelistener"></a> IScopeChangeListener</h2>
+<p>调用<code>IBurpExtenderCallbacks.registerScopeChangeListener()</code>注册scope更改侦听器。每当Burp的scope内的目标范围发生更改时，都会通知侦听器。使用<code>scopeChanged()</code>方法来处理，<strong>无参数</strong></p>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-comment"># Author: zr0sky (i@zr0sky.cn)</span>
+<span class="hljs-comment"># Blog: blog.zr0sky.cn</span>
 
 
-from burp import IBurpExtender
-from burp import IScopeChangeListener
-from java.io import PrintWriter
-from java.lang import RuntimeException
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IBurpExtender
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IScopeChangeListener
+<span class="hljs-keyword">from</span> java.io <span class="hljs-keyword">import</span> PrintWriter
+<span class="hljs-keyword">from</span> java.lang <span class="hljs-keyword">import</span> RuntimeException
 
 
-class BurpExtender(IBurpExtender, IScopeChangeListener):
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BurpExtender</span><span class="hljs-params">(IBurpExtender, IScopeChangeListener)</span>:</span>
 
-    def registerExtenderCallbacks(self, callbacks):
-        callbacks.setExtensionName(&quot;test&quot;)
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">registerExtenderCallbacks</span><span class="hljs-params">(self, callbacks)</span>:</span>
+        callbacks.setExtensionName(<span class="hljs-string">"test"</span>)
 
         callbacks.registerScopeChangeListener(self)
 
 
-    def scopeChanged(self):
-        print &quot;Scope is Changed !&quot;
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scopeChanged</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">print</span> <span class="hljs-string">"Scope is Changed !"</span>
+
 </code></pre>
 <p><img src="/2019/09/03/BurpSuite-插件编写-事件监听/1570707649775.png" alt="1570707649775"></p>
-<h2 id="完整代码："><a href="#完整代码：" class="headerlink" title="完整代码："></a>完整代码：</h2><pre><code class="python"># -*- coding: utf-8 -*-
-# Author: zr0sky (i@zr0sky.cn)
-# Blog: blog.zr0sky.cn
+<h2 id="完整代码"><a class="markdownIt-Anchor" href="#完整代码"></a> 完整代码：</h2>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-comment"># Author: zr0sky (i@zr0sky.cn)</span>
+<span class="hljs-comment"># Blog: blog.zr0sky.cn</span>
 
-from burp import IBurpExtender
-from burp import IHttpListener
-from burp import IProxyListener
-from burp import IScannerListener
-from burp import IScopeChangeListener
-from burp import IExtensionStateListener
-from java.io import PrintWriter
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IBurpExtender
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IHttpListener
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IProxyListener
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IScannerListener
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IScopeChangeListener
+<span class="hljs-keyword">from</span> burp <span class="hljs-keyword">import</span> IExtensionStateListener
+<span class="hljs-keyword">from</span> java.io <span class="hljs-keyword">import</span> PrintWriter
 
 
-class BurpExtender(IBurpExtender, IHttpListener, IProxyListener, IScannerListener, IScopeChangeListener, IExtensionStateListener):
-
-    def registerExtenderCallbacks(self, callbacks):
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BurpExtender</span><span class="hljs-params">(IBurpExtender, IHttpListener, IProxyListener, IScannerListener, IScopeChangeListener, IExtensionStateListener)</span>:</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">registerExtenderCallbacks</span><span class="hljs-params">(self, callbacks)</span>:</span>
         self._callbacks = callbacks
-
-        callbacks.setExtensionName(&quot;Event listeners&quot;)
-
-        self._stdout = PrintWriter(callbacks.getStdout(), True)
+        
+        callbacks.setExtensionName(<span class="hljs-string">"Event listeners"</span>)
+        
+        self._stdout = PrintWriter(callbacks.getStdout(), <span class="hljs-literal">True</span>)
 
 
         callbacks.registerHttpListener(self)
@@ -520,29 +532,30 @@ class BurpExtender(IBurpExtender, IHttpListener, IProxyListener, IScannerListene
         callbacks.registerScopeChangeListener(self)
 
 
-    def processHttpMessage(self, toolFlag, messageIsRequest, messageInfo):
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">processHttpMessage</span><span class="hljs-params">(self, toolFlag, messageIsRequest, messageInfo)</span>:</span>
         self._stdout.println(
-                (&quot;HTTP request to &quot; if messageIsRequest else &quot;HTTP response from &quot;) +
+                (<span class="hljs-string">"HTTP request to "</span> <span class="hljs-keyword">if</span> messageIsRequest <span class="hljs-keyword">else</span> <span class="hljs-string">"HTTP response from "</span>) +
                 messageInfo.getHttpService().toString() +
-                &quot; [&quot; + self._callbacks.getToolName(toolFlag) + &quot;]&quot;)
+                <span class="hljs-string">" ["</span> + self._callbacks.getToolName(toolFlag) + <span class="hljs-string">"]"</span>)
 
 
-    def processProxyMessage(self, messageIsRequest, message):
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">processProxyMessage</span><span class="hljs-params">(self, messageIsRequest, message)</span>:</span>
         self._stdout.println(
-                (&quot;Proxy request to &quot; if messageIsRequest else &quot;Proxy response from &quot;) +
+                (<span class="hljs-string">"Proxy request to "</span> <span class="hljs-keyword">if</span> messageIsRequest <span class="hljs-keyword">else</span> <span class="hljs-string">"Proxy response from "</span>) +
                 message.getMessageInfo().getHttpService().toString())
 
 
-    def newScanIssue(self, issue):
-        self._stdout.println(&quot;New scan issue: &quot; + issue.getIssueName())
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">newScanIssue</span><span class="hljs-params">(self, issue)</span>:</span>
+        self._stdout.println(<span class="hljs-string">"New scan issue: "</span> + issue.getIssueName())
+      
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extensionUnloaded</span><span class="hljs-params">(self)</span>:</span>
+        self._stdout.println(<span class="hljs-string">"Extension was unloaded"</span>)
 
 
-    def extensionUnloaded(self):
-        self._stdout.println(&quot;Extension was unloaded&quot;)
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scopeChanged</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">print</span> <span class="hljs-string">"Scope is Changed !"</span>
 
-
-    def scopeChanged(self):
-        print &quot;Scope is Changed !&quot;
 </code></pre>
 <p><img src="/2019/09/03/BurpSuite-插件编写-事件监听/1570708232532.png" alt="1570708232532"></p>
 
@@ -554,7 +567,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IProxyListener, IScannerListene
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/" title="BurpSuite 插件编写 - 事件监听" target="_blank" rel="external">http://yoursite.com/2019/09/03/BurpSuite-插件编写-事件监听/</a>
+      <a href="https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/" title="BurpSuite 插件编写 - 事件监听" target="_blank" rel="external">https://blog.zr0sky.cn/2019/09/03/BurpSuite-插件编写-事件监听/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -573,8 +586,8 @@ class BurpExtender(IBurpExtender, IHttpListener, IProxyListener, IScannerListene
         </a>
       </div>
       <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/zr0sky" target="_blank"><span class="text-dark">zr0sky</span><small class="ml-1x">Web Dog</small></a></h3>
-        <div>个人简介。</div>
+        <h3 class="media-heading"><a href="https://github.com/zr0sky" target="_blank"><span class="text-dark">zr0sky</span><small class="ml-1x">Web Dog &amp; Designer</small></a></h3>
+        <div>A Web Dog</div>
       </div>
     </figure>
   </div>
