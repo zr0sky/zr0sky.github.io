@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.zr0sky.com/category/index.html</loc>
+    
+    <lastmod>2020-01-08T06:20:28.252Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.zr0sky.com/tag/index.html</loc>
     
-    <lastmod>2020-01-08T06:19:11.450Z</lastmod>
+    <lastmod>2020-01-08T06:20:00.760Z</lastmod>
     
   </url>
   
@@ -19,13 +26,6 @@
     <loc>http://blog.zr0sky.com/about/index.html</loc>
     
     <lastmod>2020-01-08T05:43:13.877Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.zr0sky.com/category/index.html</loc>
-    
-    <lastmod>2019-10-18T11:16:37.512Z</lastmod>
     
   </url>
   
