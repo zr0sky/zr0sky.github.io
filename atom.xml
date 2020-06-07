@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zr0sky.com/"/>
-  <updated>2020-01-08T05:45:50.795Z</updated>
+  <updated>2020-06-07T08:54:31.641Z</updated>
   <id>http://zr0sky.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://zr0sky.com/2019/08/31/Hexo-%E6%8F%92%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/"/>
     <id>http://zr0sky.com/2019/08/31/Hexo-插入本地图片/</id>
     <published>2019-08-31T15:22:14.000Z</published>
-    <updated>2020-01-08T05:45:50.795Z</updated>
+    <updated>2020-06-07T08:54:31.641Z</updated>
     
-    <content type="html"><![CDATA[<p>把博客根目录<code>_config.yml</code> 中的<code>post_asset_folder</code>选项设置为<code>true</code></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265242045.png" alt="1567265242045"></p><p>之后安装插件<code>npm install hexo-asset-image --save</code></p><p>安装完成后新建文章，会生成一个与文章标题相同的文件夹，在需要引用时直接将图片复制到同名文件夹。</p><p>之后用markdown语法引用即可。</p><p><code>![image](image.jpg)</code></p><p><font size="5" color="red">这是网上的教程！！但。。</font></p>审查元素后发现：<p><img src="/2019/08/31/Hexo-插入本地图片/1567266125128.png" alt="1567266125128"></p><p>怪异的地址</p><h1 id="插件修改"><a class="markdownIt-Anchor" href="#插件修改"></a> 插件修改</h1><p>查看<code>hexo g</code>的输出</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266217435.png" alt="1567266217435"></p><p>最后发现是插件的问题，去根目录下<code>node_modules\hexo-asset-image</code>文件夹，调试</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266563451.png" alt="1567266563451"></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266529454.png" alt="1567266529454"></p><p>发现它分割的<code>endPos</code>错误</p><p><code>http://yoursite.com/2019/08/31/BurpSuite-代理原理/--20--15</code>  -&gt;&gt; <code>.com</code></p><p>正确的应该是<code>2019/08/31/BurpSuite-代理原理/</code></p><p>修改代码为：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266762525.png" alt="1567266762525"></p>]]></content>
+    <content type="html"><![CDATA[<p>把博客根目录<code>_config.yml</code> 中的<code>post_asset_folder</code>选项设置为<code>true</code></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567265242045.png" alt="1567265242045"></p><p>之后安装插件<code>npm install hexo-asset-image --save</code></p><p>安装完成后新建文章，会生成一个与文章标题相同的文件夹，在需要引用时直接将图片复制到同名文件夹。</p><p>之后用markdown语法引用即可。</p><p><code>![image](image.jpg)</code></p><p>但在使用时无法图片无法正常显示</p><p>审查元素后发现：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266125128.png" alt="1567266125128"></p><p>地址错误的</p><h1 id="插件修改"><a class="markdownIt-Anchor" href="#插件修改"></a> 插件修改</h1><p>查看<code>hexo g</code>的输出</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266217435.png" alt="1567266217435"></p><p>最后发现是插件的问题，去根目录下<code>node_modules\hexo-asset-image</code>文件夹，调试</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266563451.png" alt="1567266563451"></p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266529454.png" alt="1567266529454"></p><p>发现它分割的<code>endPos</code>错误</p><p><code>http://yoursite.com/2019/08/31/BurpSuite-代理原理/--20--15</code>  -&gt;&gt; <code>.com</code></p><p>正确的应该是<code>2019/08/31/BurpSuite-代理原理/</code></p><p>修改代码为：</p><p><img src="/2019/08/31/Hexo-插入本地图片/1567266762525.png" alt="1567266762525"></p>]]></content>
     
     <summary type="html">
     
